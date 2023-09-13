@@ -1,0 +1,1 @@
+export const CLASS_PROVIDER_KEY = 'CLASS_MODEL';

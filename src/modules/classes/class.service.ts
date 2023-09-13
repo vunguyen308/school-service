@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { CreateClassDto } from './dto/create-class.dto';
+import { CreateClassDto, UpdateClassDto } from './dto';
 import { IClass } from './interfaces/class.interface';
-import { UpdateClassDto } from './dto/update-class.dto';
+import { CLASS_PROVIDER_KEY } from './keys';
 
 @Injectable()
 export class ClassService {
   constructor(
-    @Inject('CLASS_MODEL') private readonly classModel: Model<IClass>,
+    @Inject(CLASS_PROVIDER_KEY) private readonly classModel: Model<IClass>,
   ) {}
 
   async create(createClassDto: CreateClassDto): Promise<IClass> {

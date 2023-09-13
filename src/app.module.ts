@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ClassModule } from './class/class.module';
+import { ClassModule } from './modules/classes';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { DatabaseModule } from './database/database.module';
+import { StudentModule } from './modules/students';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { DatabaseModule } from './database/database.module';
     DatabaseModule,
     ConfigModule.forRoot({ isGlobal: true }),
     ClassModule,
+    StudentModule,
   ],
 })
 export class AppModule {}
