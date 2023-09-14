@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+api-docs/
+**/*.d.ts
+.eslintrc.js
+commitlint.config.js
+ecosystem.config.js
+client/
+**/grpc/*.proto.ts

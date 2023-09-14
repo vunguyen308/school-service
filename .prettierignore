@@ -1,0 +1,15 @@
+/coverage
+/docs/apidocs
+/docs/site/apidocs
+/docs/_loopback.io/
+/docs/_preview/
+acceptance/*/dist
+fixtures/*/dist
+
+packages/*/dist
+dist
+client
+*.json
+CHANGELOG.md
+*.yml
+**/grpc/*.proto.ts
