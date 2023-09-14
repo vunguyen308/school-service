@@ -13,6 +13,7 @@ async function bootstrap() {
   );
   app.use(logger);
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('School-Service')
     .setDescription('The School API description')
     .setVersion('1.0')

@@ -5,6 +5,8 @@ import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { DatabaseModule } from './database/database.module';
 import { StudentModule } from './modules/students';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { StudentModule } from './modules/students';
     ConfigModule.forRoot({ isGlobal: true }),
     ClassModule,
     StudentModule,
+    AuthModule,
+    UsersModule,
   ],
 })
 export class AppModule {}

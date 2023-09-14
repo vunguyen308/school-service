@@ -10,9 +10,15 @@ import {
 import { CreateClassDto, UpdateClassDto } from './dto';
 import { ClassService } from './class.service';
 import { IClass } from './interfaces/class.interface';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Class')
+@ApiBearerAuth()
 @Controller('class')
 export class ClassController {
   constructor(private readonly classService: ClassService) {}
