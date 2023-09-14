@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { FilterQuery, HydratedDocument, Model, QueryOptions } from 'mongoose';
 import { CreateStudentDto, UpdateStudentDto } from './dto';
 import { IStudent } from './interfaces/student.interface';
 import { STUDENT_PROVIDER_KEY } from './keys';
@@ -15,8 +15,29 @@ export class StudentService {
     return this.studentModel.create(createStudentDto);
   }
 
-  async findAll(): Promise<IStudent[]> {
-    return this.studentModel.find().exec();
+  async findAll(
+    query?: {
+      filter: FilterQuery<IStudent>;
+      queryOptions: QueryOptions;
+    },
+    count?: boolean,
+  ): Promise<{
+    data: Array<HydratedDocument<IStudent>>;
+    totalCount: number;
+  }> {
+    let totalCount: number;
+    const filter = query.filter ?? {};
+    const queryOption = query.queryOptions ?? {};
+    const data = await this.studentModel
+      .find(filter)
+      .limit(queryOption.limit)
+      .skip(queryOption.skip)
+      .sort(queryOption.sort)
+      .exec();
+    if (count) {
+      totalCount = await this.studentModel.count(filter).exec();
+    }
+    return { data, totalCount };
   }
 
   async findOne(id: string): Promise<IStudent> {

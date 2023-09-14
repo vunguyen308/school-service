@@ -6,6 +6,8 @@ import {
   Param,
   Delete,
   Patch,
+  Query,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { CreateStudentDto, UpdateStudentDto } from './dto';
 import { StudentService } from './student.service';
@@ -13,9 +15,16 @@ import { IStudent } from './interfaces/student.interface';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { FilterQuery, QueryOptions } from 'mongoose';
+import {
+  buildPaginationQuery,
+  buildPaginationResponse,
+  Pagination,
+} from '../../common/utils/pagination.util';
 
 @ApiTags('Student')
 @ApiBearerAuth()
@@ -37,10 +46,46 @@ export class StudentController {
   @ApiOperation({ summary: 'Find all students' })
   @ApiResponse({
     status: 200,
-    description: 'The found record',
+    description: 'The found all records',
   })
-  async findAll(): Promise<IStudent[]> {
-    return this.studentService.findAll();
+  @ApiQuery({
+    name: 'filter',
+    example: {
+      _id: '6501c47ea8781260d1b25796',
+    },
+    required: false,
+  })
+  @ApiQuery({
+    name: 'queryOptions',
+    example: {
+      skip: 2,
+      limit: 10,
+    },
+    required: false,
+  })
+  @ApiQuery({
+    name: 'totalCount',
+    example: true,
+    required: false,
+  })
+  async findAll(
+    @Query('filter') filter?: FilterQuery<IStudent>,
+    @Query('queryOptions') queryOptions?: QueryOptions,
+    @Query('totalCount', ParseBoolPipe) totalCount?: boolean,
+  ): Promise<Pagination<IStudent[]>> {
+    if (filter) {
+      filter = JSON.parse(filter as any);
+    }
+    if (queryOptions) {
+      queryOptions = JSON.parse(queryOptions as any);
+    }
+    const query = buildPaginationQuery(filter, queryOptions);
+    const classes = await this.studentService.findAll(query, totalCount);
+    return buildPaginationResponse(
+      classes.data,
+      query.queryOptions,
+      classes.totalCount,
+    );
   }
 
   @Get(':id')

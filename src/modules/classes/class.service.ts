@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { FilterQuery, HydratedDocument, Model, QueryOptions } from 'mongoose';
 import { CreateClassDto, UpdateClassDto } from './dto';
 import { IClass } from './interfaces/class.interface';
 import { CLASS_PROVIDER_KEY } from './keys';
@@ -14,8 +14,29 @@ export class ClassService {
     return this.classModel.create(createClassDto);
   }
 
-  async findAll(): Promise<IClass[]> {
-    return this.classModel.find().exec();
+  async findAll(
+    query?: {
+      filter: FilterQuery<IClass>;
+      queryOptions: QueryOptions;
+    },
+    count?: boolean,
+  ): Promise<{
+    data: Array<HydratedDocument<IClass>>;
+    totalCount: number;
+  }> {
+    let totalCount: number;
+    const filter = query.filter ?? {};
+    const queryOption = query.queryOptions ?? {};
+    const data = await this.classModel
+      .find(filter)
+      .limit(queryOption.limit)
+      .skip(queryOption.skip)
+      .sort(queryOption.sort)
+      .exec();
+    if (count) {
+      totalCount = await this.classModel.count(filter).exec();
+    }
+    return { data, totalCount };
   }
 
   async findOne(id: string): Promise<IClass> {
