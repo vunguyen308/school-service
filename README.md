@@ -26,10 +26,16 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Build mongodb server
+
+```bash
+$ docker-compose up -d -f docker-compose.yml
+```
+
 ## Installation
 
 ```bash
-$ npm install
+$ npm ci
 ```
 
 ## Running the app
@@ -48,14 +54,13 @@ $ npm run start:prod
 ## Test
 
 ```bash
-# unit tests
-$ npm run test
 
-# e2e tests
-$ npm run test:e2e
+ Open swagger for testing APIs http://127.0.0.1:3000
 
-# test coverage
-$ npm run test:cov
+ Login by account:
+
+ username: "vunguyen"
+ password: "backend"
 ```
 
 ## Support
