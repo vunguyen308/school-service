@@ -48,7 +48,9 @@ export class StudentService {
     id: string,
     updateStudentDto: UpdateStudentDto,
   ): Promise<IStudent> {
-    return this.studentModel.findByIdAndUpdate(id, updateStudentDto).exec();
+    return this.studentModel
+      .findByIdAndUpdate(id, updateStudentDto, { new: true })
+      .exec();
   }
 
   async delete(id: string) {

@@ -47,7 +47,9 @@ export class ClassService {
     id: string,
     updateClassDto: UpdateClassDto,
   ): Promise<IClass> {
-    return this.classModel.findByIdAndUpdate(id, updateClassDto).exec();
+    return this.classModel
+      .findByIdAndUpdate(id, updateClassDto, { new: true })
+      .exec();
   }
 
   async delete(id: string) {
